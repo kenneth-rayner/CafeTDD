@@ -5,7 +5,9 @@ object Cafe {
   type Milk = String
   type GroundCoffee = String
   type FrothedMilk = String
-  type Coffee = String
+  case class Coffee (water:Water, groundCoffee: GroundCoffee,milk:Option[Milk]=None){
+    def addMilk (milk:String): Coffee = this.copy(water,groundCoffee,Some(milk))
+  }
 
   case class BrewingException(msg: String) extends Exception(msg)
 
@@ -36,7 +38,13 @@ object Cafe {
 
     water.temperature match {
       case t if t < 40 => throw new BrewingException("The water is too cold")
-      case _ => "Coffee has been brewed"
+      case _ => Coffee(water,coffee)
     }
   }
+  
+
+
+
+
+
 }
