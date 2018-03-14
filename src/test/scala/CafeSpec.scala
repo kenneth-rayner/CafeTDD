@@ -1,3 +1,4 @@
+import Cafe.Water
 import org.scalatest.{MustMatchers, WordSpec}
 
 class CafeSpec extends WordSpec with MustMatchers{
@@ -7,12 +8,16 @@ class CafeSpec extends WordSpec with MustMatchers{
 
     "Will return '40' when 25 input" in {
 
-      Cafe.heat(25) mustEqual 40
+      Cafe.heat(Water(25D)) mustEqual Water(40D)
     }
 
     "Will return '40' when 20 input" in {
 
-      Cafe.heat(20) mustEqual 40
+      Cafe.heat(Water(20D)) mustEqual Water(40D)
+    }
+    "Will return '40' when nothing input" in {
+
+      Cafe.heat(Water()) mustEqual Water(40D)
     }
 
     "Will return 'Finished grinding coffee'" in {

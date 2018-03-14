@@ -1,10 +1,11 @@
+
+
 object Cafe {
+  case class Water (temperature: Double = 0D)
 
+  def heat (water: Water, temperature: Double = 40D): Water = {
 
-  def heat (temperature: Double): Double = {
-    val increaseHeat = 40 - temperature
-
-    temperature + increaseHeat
+    water.copy(temperature)
 
   }
 
