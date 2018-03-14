@@ -1,4 +1,5 @@
 import Cafe.Water
+import Cafe.GroundCoffee
 import org.scalatest.{MustMatchers, WordSpec}
 
 class CafeSpec extends WordSpec with MustMatchers{
@@ -29,7 +30,7 @@ class CafeSpec extends WordSpec with MustMatchers{
       Cafe.frothMilk("WholeMilk") mustEqual "Milk has been frothed"
     }
     "Will return 'Coffee has been brewed" in {
-      Cafe.brew("Water","Ground Coffee") mustEqual "Coffee has been brewed"
+      Cafe.brew(Water(), "Ground Coffee") mustEqual "Coffee has been brewed"
     }
   }
 
