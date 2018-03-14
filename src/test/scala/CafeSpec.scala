@@ -14,7 +14,13 @@ class CafeSpec extends WordSpec with MustMatchers{
 
       Cafe.grind("Arabica Beans") mustEqual "Finished grinding coffee"
     }
+    "Will return 'Milk has been frothed'" in {
 
+      Cafe.frothMilk("WholeMilk") mustEqual "Milk has been frothed"
+    }
+    "Will return 'Coffee has been brewed" in {
+      Cafe.brew("Water","Ground Coffee") mustEqual "Coffee has been brewed"
+    }
   }
 
 }
