@@ -9,9 +9,12 @@ object Cafe {
   type FrothedMilk = String
   type Coffee = String
 
-  def heat (water: Water, temperature: Double = 40D): Water = {
+  def heat (water: Water, temperature: Double =40D ): Water = {
 
-    water.copy(temperature)
+    temperature match {
+      case t if t == 0D =>water.copy(40D)
+      case _  => water.copy(temperature)
+    }
 
   }
 
@@ -24,7 +27,11 @@ object Cafe {
 
   }
   def frothMilk(milk: Milk): FrothedMilk = {
-    "Milk has been frothed"
+
+    milk match {
+      case b if b == "WholeMilk" => "Milk has been frothed"
+      case  _ => throw new IllegalArgumentException ("Should use whole milk")
+    }
   }
   def brew(water: Water, coffee: GroundCoffee): Coffee = {
     "Coffee has been brewed"
