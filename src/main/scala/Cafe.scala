@@ -2,7 +2,10 @@ object Cafe {
 
 
   def heat (temperature: Double): Double = {
-  40D
+    val increaseHeat = 40 - temperature
+
+    temperature + increaseHeat
+
   }
 
   def grind(beans : String) : String = {
