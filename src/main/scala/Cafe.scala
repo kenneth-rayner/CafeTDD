@@ -10,4 +10,10 @@ object Cafe {
     "Finished grinding coffee"
 
   }
+  def frothMilk(milk: String): String = {
+    "Milk has been frothed"
+  }
+  def brew(water:String, coffee: String): String = {
+    "Coffee has been brewed"
+  }
 }
