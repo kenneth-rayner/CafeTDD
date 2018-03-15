@@ -48,4 +48,9 @@ class CafeSpec extends WordSpec with MustMatchers {
     }
     e.getMessage mustEqual "The water is too cold"
   }
+
+  "Will return a Coffee with milk" in {
+
+    Cafe.brew(Water(50), "Ground Coffee", Some("WholeMilk")) mustEqual Coffee(Water(50), "Ground Coffee", Some("WholeMilk"))
+  }
 }
