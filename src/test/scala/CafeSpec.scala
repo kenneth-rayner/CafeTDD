@@ -1,4 +1,4 @@
-import Cafe.{BrewingException, GroundCoffee, Water}
+import Cafe.{BrewingException, Coffee, GroundCoffee, Water}
 import org.scalatest.{MustMatchers, WordSpec}
 
 class CafeSpec extends WordSpec with MustMatchers {
@@ -6,12 +6,12 @@ class CafeSpec extends WordSpec with MustMatchers {
 
   "Cafe" must {
 
-    "Will return '40' when 25 input" in {
+    "Will return '25' when 25 input" in {
 
       Cafe.heat(Water(25)) mustEqual Water(25)
     }
 
-    "Will return '40' when 20 input" in {
+    "Will return '20' when 20 input" in {
 
       Cafe.heat(Water(20)) mustEqual Water(20)
     }
@@ -31,14 +31,14 @@ class CafeSpec extends WordSpec with MustMatchers {
     "Will return 'Illegal argument exception'when semi skimmed milk is input" in {
       val e = intercept[IllegalArgumentException] {
 
-        Cafe.frothMilk("Semi SkimmedMilk")
+        Cafe.frothMilk("Semi Skimmed Milk")
       }
       e.getMessage mustEqual "Should use whole milk"
     }
   }
-  "Will return 'Coffee has been brewed" in {
+  "Will return a Coffee" in {
 
-    Cafe.brew(Water(40), "Ground Coffee") mustEqual "Coffee has been brewed"
+    Cafe.brew(Water(40), "Ground Coffee") mustEqual Coffee(Water(40), "Ground Coffee", None)
   }
 
   "Will return 'Brewing exception' when water input is less than 40D" in {
@@ -48,6 +48,4 @@ class CafeSpec extends WordSpec with MustMatchers {
     }
     e.getMessage mustEqual "The water is too cold"
   }
-
-
 }

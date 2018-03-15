@@ -41,10 +41,4 @@ object Cafe {
       case _ => Coffee(water,coffee)
     }
   }
-  
-
-
-
-
-
 }
