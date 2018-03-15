@@ -34,11 +34,21 @@ object Cafe {
       case  _ => throw new IllegalArgumentException ("Should use whole milk")
     }
   }
-  def brew(water: Water, coffee: GroundCoffee): Coffee = {
+  def brew(water: Water, coffee: GroundCoffee, milk : Option[Milk]): Coffee = {
 
-    water.temperature match {
-      case t if t < 40 => throw new BrewingException("The water is too cold")
-      case _ => Coffee(water,coffee)
+    milk match {
+      case _ if water.temperature < 40 => throw new BrewingException("The water is too cold")
+      case m if m.isDefined => println(s"You have brewed the following Coffee at ${water.temperature-5} degrees with $milk")
+        Coffee(water, coffee, milk)
+      case _ => println(s"You have brewed	the following	coffee:	Coffee at ${water.temperature} degrees without	milk")
+        Coffee(water, coffee)
+      }
     }
+
+  def prepareCoffee() {
+
+
+
   }
+
 }
