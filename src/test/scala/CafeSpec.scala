@@ -3,7 +3,6 @@ import org.scalatest.{MustMatchers, WordSpec}
 
 class CafeSpec extends WordSpec with MustMatchers {
 
-
   "Cafe" must {
 
     "Will return '25' when 25 input" in {
