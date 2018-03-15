@@ -38,13 +38,13 @@ class CafeSpec extends WordSpec with MustMatchers {
   }
   "Will return a Coffee" in {
 
-    Cafe.brew(Water(40), "Ground Coffee") mustEqual Coffee(Water(40), "Ground Coffee", None)
+    Cafe.brew(Water(40), "Ground Coffee", None) mustEqual Coffee(Water(40), "Ground Coffee", None)
   }
 
   "Will return 'Brewing exception' when water input is less than 40D" in {
     val e = intercept[BrewingException] {
 
-      Cafe.brew(Water(20), "Ground Coffee")
+      Cafe.brew(Water(20), "Ground Coffee", None)
     }
     e.getMessage mustEqual "The water is too cold"
   }
