@@ -1,4 +1,4 @@
-import Cafe.{BrewingException, Coffee, GroundCoffee, Water}
+import Cafe._
 import org.scalatest.{MustMatchers, WordSpec}
 
 class CafeSpec extends WordSpec with MustMatchers {
@@ -22,18 +22,27 @@ class CafeSpec extends WordSpec with MustMatchers {
 
     "Will return 'Finished grinding coffee'" in {
 
-      Cafe.grind("Arabica Beans") mustEqual "Finished grinding coffee"
+      Cafe.grind("Arabica Beans") mustEqual "GroundCoffee"
     }
+
+    "Will return 'Grind exception' when wrong coffee beans input" in {
+      val e = intercept[GrindException] {
+
+        Cafe.grind("Baked Beans")
+      }
+      e.getMessage mustEqual "Should use Arabica Beans"
+    }
+
     "Will return 'Milk has been frothed'" in {
 
-      Cafe.frothMilk("WholeMilk") mustEqual "Milk has been frothed"
+      Cafe.frothMilk("Whole Milk") mustEqual "Milk has been frothed"
     }
     "Will return 'Illegal argument exception'when semi skimmed milk is input" in {
       val e = intercept[IllegalArgumentException] {
 
         Cafe.frothMilk("Semi Skimmed Milk")
       }
-      e.getMessage mustEqual "Should use whole milk"
+      e.getMessage mustEqual "Should use Whole Milk"
     }
   }
   "Will return a Coffee" in {
@@ -51,6 +60,6 @@ class CafeSpec extends WordSpec with MustMatchers {
 
   "Will return a Coffee with milk" in {
 
-    Cafe.brew(Water(50), "Ground Coffee", Some("WholeMilk")) mustEqual Coffee(Water(50), "Ground Coffee", Some("WholeMilk"))
+    Cafe.brew(Water(50), "Ground Coffee", Some("Whole Milk")) mustEqual Coffee(Water(50), "Ground Coffee", Some("Whole Milk"))
   }
 }
