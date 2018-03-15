@@ -36,7 +36,7 @@ object Cafe extends App {
       case  _ => throw new IllegalArgumentException ("Should use Whole Milk")
     }
   }
-  def brew(water: Water, coffee: GroundCoffee, milk : Option[Milk]): Coffee = {
+  def brew(water: Water, coffee: GroundCoffee, milk : Option[Milk] = None): Coffee = {
 
     milk match {
       case _ if water.temperature < 40 => throw new BrewingException("The water is too cold")
@@ -47,14 +47,20 @@ object Cafe extends App {
       }
     }
 
-  def prepareCoffee() : Coffee = {
+  def prepareCoffee(beans: String, temp: Double, milk: Option[String] = None) : Coffee = {
 
-    val ground = grind("Arabica Beans")
-    val water = heat(Water(40))
-    frothMilk("Whole Milk")
+    val ground = grind(beans)
+    val water = heat(Water(temp))
 
-    brew(water, ground, None)
-
+    milk match {
+      case m if m.isDefined => frothMilk(milk.get)
+        brew(water, ground, Some(milk.get))
+      case _ => brew(water, ground)
+    }
   }
-  prepareCoffee()
+  prepareCoffee("Arabica Beans", 40)
+  prepareCoffee("Arabica Beans", 40, Some("Whole Milk"))
+  //prepareCoffee("Baked Beans", 50)
+  //prepareCoffee("Arabica Beans", 10)
+  //prepareCoffee("Arabica Beans", 40, Some("Semi Skimmed Milk"))
 }
