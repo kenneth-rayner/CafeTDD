@@ -1,5 +1,9 @@
 import java.util.concurrent.Executors
+
+import com.sun.deploy.util.SyncFileAccess.RandomAccessFileLock
+
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Random
 
 object Cafe extends App {
 
@@ -18,8 +22,10 @@ object Cafe extends App {
 
   def heat(water: Water): Future[Water] = Future {
     println("Heating water")
+    Thread.sleep(Random.nextInt(2000))
     println("Finished heating water")
     water.temperature match {
+
       case t if t == 0 => water.copy(40)
       case _ => water.copy(water.temperature)
     }
@@ -29,6 +35,7 @@ object Cafe extends App {
 
     beans match {
       case b if b == "Arabica Beans" => println("Started grinding")
+        Thread.sleep(Random.nextInt(2000))
         println("Finished grinding")
         "GroundCoffee"
       case _ => throw GrindException("Should use Arabica Beans")
@@ -39,6 +46,7 @@ object Cafe extends App {
 
     milk match {
       case b if b == "Whole Milk" => println("Milk frothing system engaged")
+        Thread.sleep(Random.nextInt(2000))
         println("Shutting down milk frothing system")
         "Whole Milk"
       case _ => throw new IllegalArgumentException("Should use Whole Milk")
@@ -50,8 +58,10 @@ object Cafe extends App {
     (water.temperature, milk) match {
       case (t,_) if t < 40 => throw BrewingException("The water is too cold")
       case (_,m) if m.isDefined => println(s"You have brewed the following Coffee at ${water.temperature-5} degrees with ${milk.get}")
+        Thread.sleep(Random.nextInt(2000))
         Coffee(water, coffee, milk).addMilk("Whole Milk")
       case _ => println(s"You have brewed	the following Coffee at ${water.temperature} degrees without milk")
+        Thread.sleep(Random.nextInt(2000))
         Coffee(water, coffee)
     }
   }
