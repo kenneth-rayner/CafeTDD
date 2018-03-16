@@ -40,7 +40,7 @@ object Cafe extends App {
     milk match {
       case b if b == "Whole Milk" => println("Milk frothing system engaged")
         println("Shutting down milk frothing system")
-        "Milk has been frothed"
+        "Whole Milk"
       case _ => throw new IllegalArgumentException("Should use Whole Milk")
     }
   }
@@ -63,11 +63,12 @@ object Cafe extends App {
 
     milk match {
 
-      case _ if milk.isDefined => frothMilk(milk.get)
+      case _ if milk.isDefined => val frothyMilk = frothMilk(milk.get)
         for {
+          froth <- frothyMilk
           ground <- groundCoffee
           water <- heatedWater
-          coffee: Coffee <- brew(water, ground, milk)
+          coffee: Coffee <- brew(water, ground, Some(froth))
         } yield coffee
       case _ =>
         for {
@@ -78,6 +79,8 @@ object Cafe extends App {
 
     }
   }
+
+
 
   //prepareCoffee("Arabica Beans", 40)
   prepareCoffee("Arabica Beans", 40, Some("Whole Milk"))
