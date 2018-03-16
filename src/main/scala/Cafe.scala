@@ -63,11 +63,10 @@ object Cafe extends App {
 
     milk match {
 
-      case _ if milk.isDefined => val frothedMilk = frothMilk(milk.get)
+      case _ if milk.isDefined => frothMilk(milk.get)
         for {
           ground <- groundCoffee
           water <- heatedWater
-          foam <- frothedMilk
           coffee: Coffee <- brew(water, ground, milk)
         } yield coffee
       case _ =>
