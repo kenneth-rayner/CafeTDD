@@ -60,10 +60,11 @@ object Cafe extends App {
 
     val groundCoffee = grind(beans)
     val heatedWater = heat(Water(temp))
+    val frothyMilk = frothMilk(milk.getOrElse(""))
 
     milk match {
 
-      case _ if milk.isDefined => val frothyMilk = frothMilk(milk.get)
+      case _ if milk.isDefined =>
         for {
           froth <- frothyMilk
           ground <- groundCoffee
