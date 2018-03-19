@@ -5,7 +5,7 @@ import scala.util.{Failure, Random, Success}
 
 object Cafe extends App {
 
-  implicit val ec : ExecutionContext = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
+  implicit def ec : ExecutionContext = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
 
   type CoffeeBeans = String
   type Milk = String
@@ -46,7 +46,7 @@ object Cafe extends App {
       case b if b == "Whole Milk" => println("Milk frothing system engaged")
         Thread.sleep(Random.nextInt(2000))
         println("Shutting down milk frothing system")
-        "Whole Milk"
+        "Frothed Whole Milk"
       case _ => throw new IllegalArgumentException("Should use Whole Milk")
     }
   }
@@ -57,7 +57,7 @@ object Cafe extends App {
       case (t,_) if t < 40 => throw BrewingException("The water is too cold")
       case (_,m) if m.isDefined => println(s"You have brewed the following Coffee at ${water.temperature-5} degrees with ${milk.get}")
         Thread.sleep(Random.nextInt(2000))
-        Coffee(water, coffee, milk).addMilk("Whole Milk")
+        Coffee(water, coffee, milk).addMilk("Frothed Whole Milk")
       case _ => println(s"You have brewed	the following Coffee at ${water.temperature} degrees without Milk")
         Thread.sleep(Random.nextInt(2000))
         Coffee(water, coffee)
@@ -90,7 +90,7 @@ object Cafe extends App {
 
   }
 
-  val completed = prepareCoffee("Arabica Beans", 40)
+  val completed = prepareCoffee("Arabica Beans", 40, Some("Whole Milk"))
   completed onComplete {
     case Success(c) => c
     case Failure(e) => println(e.getMessage)
