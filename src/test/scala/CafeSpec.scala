@@ -1,5 +1,3 @@
-import java.util.concurrent.Executors
-
 import Cafe._
 import org.scalatest.{AsyncWordSpec, MustMatchers}
 
