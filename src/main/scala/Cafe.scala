@@ -1,9 +1,7 @@
 import java.util.concurrent.Executors
 
-import com.sun.deploy.util.SyncFileAccess.RandomAccessFileLock
-
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Random
+import scala.util.{Failure, Random, Success}
 
 object Cafe extends App {
 
@@ -60,7 +58,7 @@ object Cafe extends App {
       case (_,m) if m.isDefined => println(s"You have brewed the following Coffee at ${water.temperature-5} degrees with ${milk.get}")
         Thread.sleep(Random.nextInt(2000))
         Coffee(water, coffee, milk).addMilk("Whole Milk")
-      case _ => println(s"You have brewed	the following Coffee at ${water.temperature} degrees without milk")
+      case _ => println(s"You have brewed	the following Coffee at ${water.temperature} degrees without Milk")
         Thread.sleep(Random.nextInt(2000))
         Coffee(water, coffee)
     }
@@ -89,16 +87,27 @@ object Cafe extends App {
         } yield coffee
 
     }
+
   }
 
+  val completed = prepareCoffee("Arabica Beans", 40)
+  completed onComplete {
+    case Success(c) => c
+    case Failure(e) => println(e.getMessage)
 
-
-  //prepareCoffee("Arabica Beans", 40)
-  prepareCoffee("Arabica Beans", 40, Some("Whole Milk"))
-  //prepareCoffee("Baked Beans", 50)
-  //prepareCoffee("Arabica Beans", 10)
-  //prepareCoffee("Arabica Beans", 40, Some("Semi Skimmed Milk"))
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 // potential alternative to two for loops
