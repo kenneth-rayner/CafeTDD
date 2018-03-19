@@ -35,7 +35,7 @@ object Cafe extends App {
       case b if b == "Arabica Beans" => println("Started grinding")
         Thread.sleep(Random.nextInt(2000))
         println("Finished grinding")
-        "GroundCoffee"
+        "Ground Arabica Beans"
       case _ => throw GrindException("Should use Arabica Beans")
     }
   }
