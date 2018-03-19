@@ -1,64 +1,83 @@
+import java.util.concurrent.Executors
+
 import Cafe._
-import org.scalatest.{MustMatchers, WordSpec}
+import org.scalatest.{AsyncWordSpec, MustMatchers}
 
-class CafeSpec extends WordSpec with MustMatchers {
+import scala.concurrent.{ExecutionContext, Future}
 
-  "Cafe" must {
+class CafeSpec extends AsyncWordSpec with MustMatchers {
 
-    "Will return '25' when 25 input" in {
+  implicit def ec: ExecutionContext = Cafe.ec
 
-      Cafe.heat(Water(25)) mustEqual Water(25)
+  "Cafe" should {
+
+    "return '20' when 20 input" in {
+
+      val heatedWater: Future[Water] = Cafe.heat(Water(20))
+      heatedWater.map { water: Water => assert(water.temperature == 20) }
+
     }
 
-    "Will return '20' when 20 input" in {
+    "return '25' when 25 input" in {
 
-      Cafe.heat(Water(20)) mustEqual Water(20)
-    }
-    "Will return '40' when nothing input" in {
+      val heatedWater: Future[Water] = Cafe.heat(Water(25))
+      heatedWater.map { water: Water => assert(water.temperature == 25) }
 
-      Cafe.heat(Water()) mustEqual Water(40)
-    }
-
-    "Will return 'Finished grinding coffee'" in {
-
-      Cafe.grind("Arabica Beans") mustEqual "GroundCoffee"
-    }
-
-    "Will return 'Grind exception' when wrong coffee beans input" in {
-      val e = intercept[GrindException] {
-
-        Cafe.grind("Baked Beans")
-      }
-      e.getMessage mustEqual "Should use Arabica Beans"
-    }
-
-    "Will return 'Milk has been frothed'" in {
-
-      Cafe.frothMilk("Whole Milk") mustEqual "Milk has been frothed"
-    }
-    "Will return 'Illegal argument exception'when semi skimmed milk is input" in {
-      val e = intercept[IllegalArgumentException] {
-
-        Cafe.frothMilk("Semi Skimmed Milk")
-      }
-      e.getMessage mustEqual "Should use Whole Milk"
     }
   }
+
+  "Will return '40' when nothing input" in {
+
+    val heatedWater: Future[Water] = Cafe.heat(Water())
+    heatedWater.map { water: Water => assert(water.temperature == 40) }
+  }
+
+  "Will return 'Finished grinding coffee'" in {
+
+    val groundBeans: Future[GroundCoffee] = Cafe.grind("Arabica Beans")
+    groundBeans.map { beans: GroundCoffee => assert(beans == "Ground Arabica Beans") }
+  }
+
+  "Will return 'Grind exception' when wrong coffee beans input" in {
+
+    recoverToSucceededIf[GrindException] {
+
+      Cafe.grind("Baked Beans")
+
+    }
+  }
+
+  "Will return 'Milk has been frothed'" in {
+
+    val frothyMilk: Future[FrothedMilk] = Cafe.frothMilk("Whole Milk")
+    frothyMilk.map { milk: FrothedMilk => assert(milk == "Frothed Whole Milk") }
+  }
+
+  "Will return 'Illegal argument exception'when semi skimmed milk is input" in {
+    recoverToSucceededIf[IllegalArgumentException] {
+
+      Cafe.frothMilk("Semi Skimmed Milk")
+
+    }
+  }
+
   "Will return a Coffee" in {
 
-    Cafe.brew(Water(40), "Ground Coffee", None) mustEqual Coffee(Water(40), "Ground Coffee", None)
+    val brewedCoffee: Future[Coffee] = Cafe.brew(Water(40), "Ground Arabica Beans", None)
+    brewedCoffee.map { coffee: Coffee => assert(coffee == Coffee(Water(40), "Ground Arabica Beans")) }
   }
 
   "Will return 'Brewing exception' when water input is less than 40D" in {
-    val e = intercept[BrewingException] {
+    recoverToSucceededIf[BrewingException] {
 
-      Cafe.brew(Water(20), "Ground Coffee", None)
+      Cafe.brew(Water(20), "Arabica Ground Coffee", None)
+
     }
-    e.getMessage mustEqual "The water is too cold"
   }
-
+  
   "Will return a Coffee with milk" in {
 
-    Cafe.brew(Water(50), "Ground Coffee", Some("Whole Milk")) mustEqual Coffee(Water(50), "Ground Coffee", Some("Whole Milk"))
+    val brewedCoffee: Future[Coffee] = Cafe.brew(Water(40), "Ground Arabica Beans", Some("Whole Milk"))
+    brewedCoffee.map { coffee: Coffee => assert(coffee == Coffee(Water(40), "Ground Arabica Beans", Some("Frothed Whole Milk"))) }
   }
 }
