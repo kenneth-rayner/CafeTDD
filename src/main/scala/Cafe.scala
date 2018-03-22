@@ -5,15 +5,19 @@ import scala.util.{Failure, Random, Success}
 
 object Cafe extends App {
 
-  implicit def ec : ExecutionContext = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
+  implicit def ec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
 
   type CoffeeBeans = String
   type Milk = String
   type GroundCoffee = String
   type FrothedMilk = String
+
   case class Water(temperature: Double = 0)
+
   case class BrewingException(msg: String) extends Exception(msg)
+
   case class GrindException(msg: String) extends Exception(msg)
+
   case class Coffee(water: Water, groundCoffee: GroundCoffee, milk: Option[Milk] = None) {
     def addMilk(milk: String): Coffee = this.copy(water, groundCoffee, Some(milk))
   }
@@ -54,8 +58,8 @@ object Cafe extends App {
   def brew(water: Water, coffee: GroundCoffee, milk: Option[Milk] = None): Future[Coffee] = Future {
 
     (water.temperature, milk) match {
-      case (t,_) if t < 40 => throw BrewingException("The water is too cold")
-      case (_,m) if m.isDefined => println(s"You have brewed the following Coffee at ${water.temperature-5} degrees with ${milk.get}")
+      case (t, _) if t < 40 => throw BrewingException("The water is too cold")
+      case (_, m) if m.isDefined => println(s"You have brewed the following Coffee at ${water.temperature - 5} degrees with ${milk.get}")
         Thread.sleep(Random.nextInt(2000))
         Coffee(water, coffee, milk).addMilk("Frothed Whole Milk")
       case _ => println(s"You have brewed	the following Coffee at ${water.temperature} degrees without Milk")
@@ -71,7 +75,6 @@ object Cafe extends App {
     val frothyMilk = frothMilk(milk.getOrElse(""))
 
     milk match {
-
       case _ if milk.isDefined =>
         for {
           froth <- frothyMilk
@@ -85,29 +88,15 @@ object Cafe extends App {
           water <- heatedWater
           coffee: Coffee <- brew(water, ground)
         } yield coffee
-
     }
-
   }
 
   val completed = prepareCoffee("Arabica Beans", 40, Some("Whole Milk"))
   completed onComplete {
     case Success(c) => c
     case Failure(e) => println(e.getMessage)
-
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 // potential alternative to two for loops
